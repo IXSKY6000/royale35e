@@ -1,0 +1,28 @@
+name: Compiler le G1A
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: manawyrm/fxsdk:0.0
+
+    steps:
+      - name: Recuperer le projet
+        uses: actions/checkout@v4
+
+      - name: Compiler pour Graph 35+E II
+        run: |
+          fxsdk build-fx -B
+          test -f ROYALE35.g1a
+
+      - name: Donner le fichier G1A
+        uses: actions/upload-artifact@v4
+        with:
+          name: ROYALE35-g1a
+          path: ROYALE35.g1a
+          if-no-files-found: error
